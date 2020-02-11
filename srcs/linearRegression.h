@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:33 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/11 10:53:32 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/11 12:08:39 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 #include <fstream>
 #include <ctype.h>
 
-#define FILE_NAME "files/data.csv"
+#define DATA_FILE "files/data.csv"
+#define THETA_FILE "files/thetaFile.csv"
 #define DELIMETER ','
-#define LEARING_RATE 0.2
-#define CYRCLES 10000
+#define LEARNING_RATE 0.02
+#define CYCLES 10000
 
 using namespace std;
 
@@ -36,12 +37,13 @@ class LinearRegression
 		string			dataInfo_;
 
 		void	getData();
-		void	writeData(string& line);
+		void	writeData(const string& line);
 		void	normalizeMileage();
+		void	createOutFile();
 
 	public:
 		LinearRegression():
-			theta0_(0), theta1_(0), learningRate_(0.02), mileage_(0), price_(0), mileMax_(-1), mileMin_(-1), dataInfo_()
+			theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), price_(0), mileMax_(-1), mileMin_(-1), dataInfo_()
 			{
 				getData();
 			};
