@@ -1,36 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   estimatePrice.h                                    :+:      :+:    :+:   */
+/*   linearRegression.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/10 10:28:36 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/10 12:23:38 by jpinyot          ###   ########.fr       */
+/*   Created: 2020/02/10 11:01:33 by jpinyot           #+#    #+#             */
+/*   Updated: 2020/02/12 12:14:07 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "theta.h"
+#include "header.h"
 
-using namespace std;
-
-class EstimatePrice
+class LinearRegression
 {
 	private:
-		float	theta0_;
-		float	theta1_;
-		int		mileage_;
-		float	estimatePrice_;
-		/* theta	thetas_; */
+		double			theta0_;
+		double			theta1_;
+		double			learningRate_;
+		vector<double>	mileage_;
+		vector<double>	price_;
+		int				maxMile_;
+		int				minMile_;
+		string			dataInfo_;
+
+		void			getData();
+		void			setData(const string& line);
+		void			normalizeMileage();
+		void			createOutFile();
 
 	public:
+		LinearRegression():
+			theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), price_(0), maxMile_(-1), minMile_(-1), dataInfo_()
+			{
+				getData();
+			};
+		void			linearRegression();
+		double			normalize(const int& mileage);
 
-		EstimatePrice(int mileage):
-			theta0_(0), theta1_(0), mileage_(mileage), estimatePrice_(0)
-			/* theta0_(thetas_.theta0), theta1_(thetas_.theta1), mileage_(mileage), estimatePrice_(0) */
-		{
-			estimatePrice_ = theta0_ + (theta1_ * mileage_);
-		}
-		float	theta0() {return theta0_;}
-		float	theta1() {return theta1_;}
+		double			theta0() {return theta0_;}
+		double			theta1() {return theta1_;}
+		vector<double>	mileage() {return mileage_;}
+		vector<double>	price() {return price_;}
 };

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:31 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/11 12:08:40 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/12 08:37:21 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	LinearRegression::getData()
 
 	while (getline(file, line)){
 		if (isdigit(line[0])){
-			writeData(line);
+			setData(line);
 		}
 		else {
 			dataInfo_ = line;
@@ -32,7 +32,7 @@ void	LinearRegression::getData()
 	normalizeMileage();
 }
 
-void	LinearRegression::writeData(const string& line)
+void	LinearRegression::setData(const string& line)
 {
 	int	delimeterPos = 0;
 	if ((delimeterPos = line.find(DELIMETER)))			//DELIMETER
@@ -43,34 +43,34 @@ void	LinearRegression::writeData(const string& line)
 		int price = stoi(priceString);
 		mileage_.push_back(mileage);
 		price_.push_back(price);
-		if (mileage > mileMax_){
-			mileMax_ = mileage;
+		if (mileage > maxMile_){
+			maxMile_ = mileage;
 		}
-		if (mileMin_ == -1 || mileage < mileMin_){
-			mileMin_ = mileage;
+		if (minMile_ == -1 || mileage < minMile_){
+			minMile_ = mileage;
 		}
 	}
 }
 
 void	LinearRegression::normalizeMileage()
 {
-	int divisor = mileMax_ - mileMin_;				//what if are the same?? or 0
+	int divisor = maxMile_ - minMile_;				//what if are the same?? or 0
 	for (int i = 0; mileage_[i]; i++){
-		mileage_[i] = (mileage_[i] - mileMin_) / divisor;
+		mileage_[i] = (mileage_[i] - minMile_) / divisor;
 	}
 }
 
 void	LinearRegression::createOutFile()
 {
 	ofstream outFile(THETA_FILE);
-	outFile << theta0_ << ',' << theta1_ << '\n' << mileMax_ << ',' << mileMin_ << '\n' << std::endl;
+	outFile << theta0_ << ',' << theta1_ << '\n' << maxMile_ << ',' << minMile_ << '\n' << std::endl;
 	outFile.close();
 }
 
 double	LinearRegression::normalize(const int& mileage)			//WHY?
 {
-	cout << (mileage - mileMin_) / (mileMax_ - mileMin_);
-	return (mileage - mileMin_) / (mileMax_ - mileMin_);
+	cout << (mileage - minMile_) / (maxMile_ - minMile_);
+	return (mileage - minMile_) / (maxMile_ - minMile_);
 }
 
 void	LinearRegression::linearRegression()
@@ -90,23 +90,4 @@ void	LinearRegression::linearRegression()
 		theta1_ -= learningRate_ * 1/size * tmpT1;
 	}
 	createOutFile();
-}
-
-int main()
-{
-	LinearRegression lr;
-	lr.linearRegression();
-
-	vector<double> test = lr.mileage();
-	vector<double> test2 = lr.price();
-	double theta0 = lr.theta0();
-	double theta1 = lr.theta1();
-
-	cout << "\n\n" << theta0 << '\t' << theta1 << '\t' << "\n\n" << theta0 + (theta1 * -1) << "\n\n";
-	/* cout << "\n\n" << theta0 << '\t' << theta1 << '\t' << lr.normalize(22899) << "\n\n" << theta0 + (theta1 * lr.normalize(120000)) << "\n\n"; */
-	/* for (int i = 0; test[i]; i++){ */
-	/* 	cout << test[i] << '\t'; */
-	/* 	cout << test2[i] << '\n'; */
-	/* } */
-	return 0;
 }
