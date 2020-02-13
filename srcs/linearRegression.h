@@ -6,46 +6,42 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:33 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/11 12:08:39 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/13 09:51:14 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <vector>
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <ctype.h>
-
-#define DATA_FILE "files/data.csv"
-#define THETA_FILE "files/thetaFile.csv"
-#define DELIMETER ','
-#define LEARNING_RATE 0.02
-#define CYCLES 10000
-
-using namespace std;
+#include "header.h"
 
 class LinearRegression
 {
 	private:
+		int				flags_;
 		double			theta0_;
 		double			theta1_;
 		double			learningRate_;
 		vector<double>	mileage_;
 		vector<double>	price_;
-		int				mileMax_;
-		int				mileMin_;
+		/* vector<double>	thetaError_; */
+		int				maxMile_;
+		int				minMile_;
 		string			dataInfo_;
 
 		void	getData();
+		void	setData(const string& line);
 		void	writeData(const string& line);
 		void	normalizeMileage();
 		void	createOutFile();
+		/* void	plotThetaError(int i); */
 
 	public:
-		LinearRegression():
-			theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), price_(0), mileMax_(-1), mileMin_(-1), dataInfo_()
+		LinearRegression(int flags=1):
+			flags_(flags), theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), price_(0), maxMile_(-1), minMile_(-1), dataInfo_()
+			/* flags_(flags), theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), price_(0), thetaError_(0), maxMile_(-1), minMile_(-1), dataInfo_() */
 			{
 				getData();
+				/* if (flags_ & 1){ */
+				/* 	thetaError_.reserve(CYCLES); */
+				/* } */
 			};
 		void		linearRegression();
 		double		normalize(const int& mileage);
