@@ -6,40 +6,41 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:33 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/12 12:14:07 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/13 12:11:01 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-class LinearRegression
+class EstimatePrice
 {
 	private:
 		double			theta0_;
 		double			theta1_;
-		double			learningRate_;
-		vector<double>	mileage_;
-		vector<double>	price_;
+		double			estimatePrice_;
+		int				mileage_;
 		int				maxMile_;
 		int				minMile_;
-		string			dataInfo_;
 
 		void			getData();
-		void			setData(const string& line);
-		void			normalizeMileage();
-		void			createOutFile();
+		void			setTheta(const string& line);
+		void			setMinMaxMile(const string& line);
+		double			normalizeMile(const int& mileage);
+
+		void			setMileage(const int& mileage) {mileage_ = mileage;};
 
 	public:
-		LinearRegression():
-			theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), price_(0), maxMile_(-1), minMile_(-1), dataInfo_()
+		EstimatePrice():
+			theta0_(0), theta1_(0), estimatePrice_(0), mileage_(0), maxMile_(-1), minMile_(-1)
 			{
 				getData();
 			};
-		void			linearRegression();
-		double			normalize(const int& mileage);
+		double			predictPrice();
+		double			predictPrice(const int& mileage);
 
 		double			theta0() {return theta0_;}
 		double			theta1() {return theta1_;}
-		vector<double>	mileage() {return mileage_;}
-		vector<double>	price() {return price_;}
+		double			mileage() {return mileage_;}
+		int				maxMile() {return maxMile_;}
+		int				minMile() {return minMile_;}
 };

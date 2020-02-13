@@ -6,11 +6,12 @@
 #    By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 12:28:11 by jpinyot           #+#    #+#              #
-#    Updated: 2020/02/12 12:45:42 by jpinyot          ###   ########.fr        #
+#    Updated: 2020/02/13 12:11:03 by jpinyot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 cmake_minimum_required(VERSION 3.10)
+set (CMAKE_CXX_STANDARD 11)
 
 # set the project name
 project(ft_linear_regression)
@@ -21,15 +22,13 @@ add_executable(	ft_linear_regression
 				srcs/linearRegression.cpp
 				srcs/estimatePrice.cpp)
 
-# configure_file(	srcs/linearRegression.h
-# 				srcs/estimatePrice.h
-# 				srcs/header.h
-# 				srcs/matplotlibcpp.h)
+# add ethe header files
 set(HEADER_FILES	srcs/linearRegression.h
  					srcs/estimatePrice.h
- 					srcs/header.h
-	 				srcs/matplotlibcpp.h)
+ 					srcs/header.h)
+	 				# srcs/matplotlibcpp.h)
 
+# dependencies for Python.h, used for ploting
 find_package(Python2 COMPONENTS Development NumPy)
 target_include_directories(ft_linear_regression PRIVATE ${Python2_INCLUDE_DIRS} ${Python2_NumPy_INCLUDE_DIRS})
 target_link_libraries(ft_linear_regression Python2::Python Python2::NumPy)
