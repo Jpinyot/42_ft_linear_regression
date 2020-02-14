@@ -6,7 +6,7 @@
 #    By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 12:28:11 by jpinyot           #+#    #+#              #
-#    Updated: 2020/02/13 12:11:03 by jpinyot          ###   ########.fr        #
+#    Updated: 2020/02/14 09:11:05 by jpinyot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,14 @@ project(ft_linear_regression)
 add_executable(	ft_linear_regression
 				srcs/mainLinReg.cpp
 				srcs/linearRegression.cpp
-				srcs/estimatePrice.cpp)
+				srcs/estimatePrice.cpp
+				srcs/plot.cpp)
 
 # add ethe header files
 set(HEADER_FILES	srcs/linearRegression.h
  					srcs/estimatePrice.h
- 					srcs/header.h)
+ 					srcs/header.h
+					srcs/plot.h)
 	 				# srcs/matplotlibcpp.h)
 
 # dependencies for Python.h, used for ploting

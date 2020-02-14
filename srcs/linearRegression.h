@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:33 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/13 09:51:14 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/14 09:13:10 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class LinearRegression
 		double			learningRate_;
 		vector<double>	mileage_;
 		vector<double>	price_;
-		/* vector<double>	thetaError_; */
+		vector<double>	thetaError_;
 		int				maxMile_;
 		int				minMile_;
 		string			dataInfo_;
@@ -31,17 +31,15 @@ class LinearRegression
 		void	writeData(const string& line);
 		void	normalizeMileage();
 		void	createOutFile();
-		/* void	plotThetaError(int i); */
 
 	public:
 		LinearRegression(int flags=1):
 			flags_(flags), theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), price_(0), maxMile_(-1), minMile_(-1), dataInfo_()
-			/* flags_(flags), theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), price_(0), thetaError_(0), maxMile_(-1), minMile_(-1), dataInfo_() */
 			{
 				getData();
-				/* if (flags_ & 1){ */
-				/* 	thetaError_.reserve(CYCLES); */
-				/* } */
+				if (flags_ & 1){
+					thetaError_.reserve(CYCLES);
+				}
 			};
 		void		linearRegression();
 		double		normalize(const int& mileage);
@@ -50,4 +48,5 @@ class LinearRegression
 		double			theta1() {return theta1_;}
 		vector<double>	mileage() {return mileage_;}
 		vector<double>	price() {return price_;}
+		vector<double>	thetaError() {return thetaError_;}
 };
