@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 08:36:42 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/14 11:55:40 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/14 12:50:53 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@
 #include <thread>
 
 #include <unistd.h>
-
-#include <Python.h>
-#include <numpy/arrayobject.h>
 
 #define DATA_FILE "files/data.csv"
 #define THETA_FILE "files/thetaFile.csv"
