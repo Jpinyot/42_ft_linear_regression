@@ -6,13 +6,14 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:00:12 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/15 12:32:15 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/15 18:26:11 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <vector>
 #include <string>
 #include <map>
+#include <iostream>
 
 #include <Python.h>
 #include <numpy/arrayobject.h>
@@ -22,6 +23,7 @@ using namespace std;
 class Plot{
 	private:
 		PyObject*	getArray(const vector<double>& array);
+		bool		needFloatVal(const string& string);
 
 	public:
 		Plot(){
@@ -34,6 +36,8 @@ class Plot{
 		void	plot(const vector<double>& x, const vector<double>& y, const string format="");
 		void	named_plot(const string& name, const vector<double>& y, const string& format = "");
 		void	named_plot(const string& name, const vector<double>& x, const vector<double>& y, const string& format = "");
+		void	param_plot(const vector<string>& params, const vector<double>& x, const vector<double>& y, const string& format = "");
+		void	param_plot(const vector<string>& params, const vector<double>& y, const string& format = "");
 		void	subplot(long nRows, long nCols, long plotNumber);
 		void	subplot2grid(long nRows, long nCols, long rowId=0, long colId=0, long rowSpan=1, long colSpan=1);
 		void	axis(const std::string &axisstr);
