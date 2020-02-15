@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 08:34:13 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/15 12:41:55 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/15 18:29:47 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,13 @@ int main(int av, char** ag)
 	Plot pl;
 	pl.subplot2grid(2, 1);
 	/* pl.plot(lr.thetaError()); */
-	pl.named_plot("HOLI", lr.thetaError(), "r");
+	pl.subplot2grid(2, 1, 1);
+	vector<string> plot1;
+	/* plot1.push_back("label"); */
+	/* plot1.push_back("theta error"); */
+	/* plot1.push_back("linewidth"); */
+	/* plot1.push_back("6.0"); */
+	pl.param_plot(plot1, lr.thetaError(), "r");
 	pl.legend();
 	/* map<string, string> tick; */
 	/* tick.insert(pair<string, string>("width","6.0")); */
@@ -60,8 +66,13 @@ int main(int av, char** ag)
 	/* pl.tick_params(tick); */
 	/* pl.ylim(160000, 6000); */
 	pl.subplot2grid(2, 1, 1);
-	pl.plot(lr.price(), lr.mileage(), "o");
-	pl.plot({8000}, {26000}, "r^");
+	vector<string> plot2;
+	plot2.push_back("label");
+	plot2.push_back("data");
+	pl.param_plot(plot2, lr.price(), lr.mileage(), "o");
+	/* pl.named_plot("data", lr.price(), lr.mileage(), "o"); */
+	/* pl.named_plot("estimate price", {8000}, {26000}, "r^"); */
+	pl.legend();
 	pl.show();
 		
 	return 0;
