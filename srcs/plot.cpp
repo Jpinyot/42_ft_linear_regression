@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:00:03 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/15 12:37:21 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/15 18:29:11 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,20 @@ PyObject* Plot::getArray(const vector<double>& array)
 	void* value = (void*)array.data();
 	PyObject* retArray = PyArray_SimpleNewFromData(1, &dims, NPY_DOUBLE, value);
     return retArray;
+}
+
+bool		Plot::needFloatVal(const string& string)
+{
+	if (string == "linewidth"){
+		return true;
+	}
+	/* switch(string){ */
+	/* 	case "linewidth": */
+	/* 		return true; */
+	/* 	default: */
+	/* 		return false; */
+	/* } */
+	return false;
 }
 
 void	Plot::plot(const vector<double>& y, const string format)
@@ -128,6 +142,88 @@ void	Plot::named_plot(const string& name, const vector<double>& x, const vector<
 	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "plot"),
 									plot_args,
 									kwargs);
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+
+    Py_DECREF(kwargs);
+    Py_DECREF(plot_args);
+    if (res) Py_DECREF(res);
+}
+
+void	Plot::param_plot(const vector<string>& params, const vector<double>& x, const vector<double>& y, const string& format)
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+	PyObject* kwargs = PyDict_New();
+	for (int i = 1; i < params.size(); i += 2){
+		if (needFloatVal(params[i - 1])){
+			PyDict_SetItemString(kwargs, params[i - 1].c_str(), PyFloat_FromDouble(stod(params[i])));
+		}
+		else{
+			PyDict_SetItemString(kwargs, params[i - 1].c_str(), PyString_FromString(params[i].c_str()));
+		}
+	}
+
+    PyObject* xarray = getArray(x);
+    PyObject* yarray = getArray(y);
+
+    PyObject* pystring = PyString_FromString(format.c_str());
+
+    PyObject* plot_args = PyTuple_New(3);
+    PyTuple_SetItem(plot_args, 0, xarray);
+    PyTuple_SetItem(plot_args, 1, yarray);
+    PyTuple_SetItem(plot_args, 2, pystring);
+
+	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "plot"),
+									plot_args,
+									kwargs);
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+
+    Py_DECREF(kwargs);
+    Py_DECREF(plot_args);
+    if (res) Py_DECREF(res);
+}
+void	Plot::param_plot(const vector<string>& params, const vector<double>& y, const string& format)
+{
+			Py_Initialize();			//revisar!!!!
+			if(PyArray_API == NULL){
+			    import_array();
+			}
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+	PyObject* kwargs = PyDict_New();
+	for (int i = 1; i < params.size(); i += 2){
+		if (needFloatVal(params[i - 1])){
+			PyDict_SetItemString(kwargs, params[i - 1].c_str(), PyFloat_FromDouble(stod(params[i])));
+		}
+		else{
+			PyDict_SetItemString(kwargs, params[i - 1].c_str(), PyString_FromString(params[i].c_str()));
+		}
+	}
+
+	/* FROM 1 VALUE TO 2 */
+	/* vector<double> x(y.size()); */
+    /* for(size_t i=0; i<x.size(); ++i) x.at(i) = i; */
+
+    /* PyObject* xarray = getArray(x); */
+    PyObject* yarray = getArray(y);
+
+    PyObject* pystring = PyString_FromString(format.c_str());
+
+    PyObject* plot_args = PyTuple_New(2);
+    /* PyTuple_SetItem(plot_args, 0, xarray); */
+    PyTuple_SetItem(plot_args, 0, yarray);
+    PyTuple_SetItem(plot_args, 1, pystring);
+
+	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "plot"),
+									plot_args,
+									kwargs);
+		cout << "%\n\n";				//debug
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
