@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:00:03 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/14 12:26:41 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/15 12:37:21 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	Plot::plot(const vector<double>& y, const string format)
 			    import_array();
 			}
 	/* FROM 1 VALUE TO 2 */
-	std::vector<double> x(y.size());
+	vector<double> x(y.size());
     for(size_t i=0; i<x.size(); ++i) x.at(i) = i;
 
     PyObject* xarray = getArray(x);
@@ -74,6 +74,69 @@ void	Plot::plot(const vector<double>& x, const vector<double>& y, const string f
     if(res) Py_DECREF(res);
 }
 
+void	Plot::named_plot(const string& name, const vector<double>& y, const string& format)
+{
+			Py_Initialize();			//revisar!!!!
+			if(PyArray_API == NULL){
+			    import_array();
+			}
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+    PyObject* kwargs = PyDict_New();
+    PyDict_SetItemString(kwargs, "label", PyString_FromString(name.c_str()));
+
+    PyObject* yarray = getArray(y);
+
+    PyObject* pystring = PyString_FromString(format.c_str());
+
+    PyObject* plot_args = PyTuple_New(2);
+
+    PyTuple_SetItem(plot_args, 0, yarray);
+    PyTuple_SetItem(plot_args, 1, pystring);
+
+	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "plot"),
+									plot_args,
+									kwargs);
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+
+    Py_DECREF(kwargs);
+    Py_DECREF(plot_args);
+    if (res) Py_DECREF(res);
+}
+
+void	Plot::named_plot(const string& name, const vector<double>& x, const vector<double>& y, const string& format)
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+    PyObject* kwargs = PyDict_New();
+    PyDict_SetItemString(kwargs, "label", PyString_FromString(name.c_str()));
+
+    PyObject* xarray = getArray(x);
+    PyObject* yarray = getArray(y);
+
+    PyObject* pystring = PyString_FromString(format.c_str());
+
+    PyObject* plot_args = PyTuple_New(3);
+    PyTuple_SetItem(plot_args, 0, xarray);
+    PyTuple_SetItem(plot_args, 1, yarray);
+    PyTuple_SetItem(plot_args, 2, pystring);
+
+	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "plot"),
+									plot_args,
+									kwargs);
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+
+    Py_DECREF(kwargs);
+    Py_DECREF(plot_args);
+    if (res) Py_DECREF(res);
+}
+
 void	Plot::subplot(long nRows, long nCols, long plotNumber)
 {
 	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
@@ -86,7 +149,7 @@ void	Plot::subplot(long nRows, long nCols, long plotNumber)
 
 	PyObject* res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "subplot"),
 											args);
-    if(!res) throw std::runtime_error("Call to subplot() failed.");
+    if(!res) throw runtime_error("Call to subplot() failed.");
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
@@ -116,7 +179,7 @@ void	Plot::subplot2grid(long nRows, long nCols, long rowId, long colId, long row
 
 	PyObject* res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "subplot2grid"),
 											args);
-    if(!res) throw std::runtime_error("Call to subplot2grid() failed.");
+    if(!res) throw runtime_error("Call to subplot2grid() failed.");
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
@@ -126,6 +189,71 @@ void	Plot::subplot2grid(long nRows, long nCols, long rowId, long colId, long row
     Py_DECREF(args);
     Py_DECREF(res);
 	
+}
+
+void	Plot::axis(const string &axisstr)
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+    PyObject* str = PyString_FromString(axisstr.c_str());
+    PyObject* args = PyTuple_New(1);
+    PyTuple_SetItem(args, 0, str);
+
+	PyObject* res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "axis"),
+											args);
+    if(!res) throw runtime_error("Call to title() failed.");
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+
+    Py_DECREF(args);
+    Py_DECREF(res);
+}
+void	ylim(double left, double right)
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+    PyObject* list = PyList_New(2);
+    PyList_SetItem(list, 0, PyFloat_FromDouble(left));
+    PyList_SetItem(list, 1, PyFloat_FromDouble(right));
+
+    PyObject* args = PyTuple_New(1);
+    PyTuple_SetItem(args, 0, list);
+
+	PyObject* res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "ylim"),
+											args);
+    if(!res) throw runtime_error("Call to ylim() failed.");
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+
+    Py_DECREF(args);
+    Py_DECREF(res);
+}
+
+void	xlim(double left, double right)
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+    PyObject* list = PyList_New(2);
+    PyList_SetItem(list, 0, PyFloat_FromDouble(left));
+    PyList_SetItem(list, 1, PyFloat_FromDouble(right));
+
+    PyObject* args = PyTuple_New(1);
+    PyTuple_SetItem(args, 0, list);
+
+	PyObject* res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "xlim"),
+											args);
+    if(!res) throw runtime_error("Call to ylim() failed.");
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+
+    Py_DECREF(args);
+    Py_DECREF(res);
 }
 
 void	Plot::tick_params(const map<string, string>& keywords, const string axis)
@@ -148,7 +276,7 @@ void	Plot::tick_params(const map<string, string>& keywords, const string axis)
 									args, kwargs);
 	/* PyObject* res = PyObject_Call(detail::_interpreter::get().s_python_function_tick_params, args, kwargs); */
   
-	if (!res) throw std::runtime_error("Call to tick_params() failed");
+	if (!res) throw runtime_error("Call to tick_params() failed");
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
@@ -156,6 +284,23 @@ void	Plot::tick_params(const map<string, string>& keywords, const string axis)
 	Py_DECREF(args);
 	Py_DECREF(kwargs);
 	Py_DECREF(res);
+}
+
+void	Plot::legend()
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+    PyObject* empty_tube = PyTuple_New(0);
+
+	PyObject* res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "legend"),
+											empty_tube);
+    /* PyObject* res = PyObject_CallObject(detail::_interpreter::get().s_python_function_legend, detail::_interpreter::get().s_python_empty_tuple); */
+    if(!res) throw std::runtime_error("Call to legend() failed.");
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+	Py_DECREF(empty_tube);
+    Py_DECREF(res);
 }
 
 void	Plot::show()
