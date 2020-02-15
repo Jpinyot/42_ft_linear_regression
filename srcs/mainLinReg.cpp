@@ -6,13 +6,16 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 08:34:13 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/14 12:39:41 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/15 12:41:55 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "linearRegression.h"
 #include "estimatePrice.h"
 #include "plot.h"
+#include "matplotlibcpp.h"
+
+namespace plt = matplotlibcpp;
 
 int main(int av, char** ag)
 {
@@ -33,15 +36,32 @@ int main(int av, char** ag)
 		<< ep.predictPrice(2300) << '\n';
 
 		/* PLOT */
+
+	/* plt::subplot2grid(2, 1); */
+	/* plt::plot(lr.thetaError(), "r"); */
+	/* /1* plt::named_plot("HOLA", lr.thetaError(), "r"); *1/ */
+	/* plt::subplot2grid(2, 1, 1); */
+	/* plt::named_plot("HOLA", lr.price(), lr.mileage(), "o"); */
+	/* plt::legend(); */
+	/* plt::show(); */
+
+
+
+
+
 	Plot pl;
 	pl.subplot2grid(2, 1);
-	map<string, string> tick;
-	/* tick.insert(pair<string, string>("axis","x")); */
-	tick.insert(pair<string, string>("direction","inout"));
-	pl.tick_params(tick);
-	pl.plot(lr.thetaError());
+	/* pl.plot(lr.thetaError()); */
+	pl.named_plot("HOLI", lr.thetaError(), "r");
+	pl.legend();
+	/* map<string, string> tick; */
+	/* tick.insert(pair<string, string>("width","6.0")); */
+	/* tick.insert(pair<string, string>("direction","inout")); */
+	/* pl.tick_params(tick); */
+	/* pl.ylim(160000, 6000); */
 	pl.subplot2grid(2, 1, 1);
 	pl.plot(lr.price(), lr.mileage(), "o");
+	pl.plot({8000}, {26000}, "r^");
 	pl.show();
 		
 	return 0;

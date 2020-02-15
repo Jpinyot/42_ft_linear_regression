@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:31 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/14 09:41:55 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/15 11:47:45 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ void	LinearRegression::setData(const string& line)
 		if (minMile_ == -1 || mileage < minMile_){
 			minMile_ = mileage;
 		}
+		/* if (price > maxPrice_){ */
+		/* 	maxPrice_ = price; */
+		/* } */
+		/* if (minPrice_ == -1 || price < minPrice_){ */
+		/* 	minPrice_ = price; */
+		/* } */
 	}
 }
 
@@ -56,7 +62,7 @@ void	LinearRegression::normalizeMileage()
 {
 	int divisor = maxMile_ - minMile_;				//what if are the same?? or 0
 	for (int i = 0; mileage_[i]; i++){
-		mileage_[i] = (mileage_[i] - minMile_) / divisor;
+		normMileage_.emplace_back((mileage_[i] - minMile_) / divisor);
 	}
 }
 
@@ -81,13 +87,13 @@ void	LinearRegression::linearRegression()
 		double tmpT0 = 0;
 		double tmpT1 = 0;
 		for (int i = 0; i < size; i++){
-			double estimatePrice = theta0_ + (theta1_ * mileage_[i]);
+			double estimatePrice = theta0_ + (theta1_ * normMileage_[i]);
 			double error = estimatePrice - price_[i];
 			tmpT0 += error;
-			tmpT1 += error * mileage_[i];
+			tmpT1 += error * normMileage_[i];
 		}
 		if (flags_ & 1){
-			thetaError_.emplace_back(tmpT0 * tmpT0);
+			thetaError_.emplace_back(fabs(tmpT0));
 		}
 		theta0_ -= learningRate_ * 1/size * tmpT0;
 		theta1_ -= learningRate_ * 1/size * tmpT1;
