@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:33 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/15 10:41:16 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/17 11:11:47 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ class LinearRegression
 		vector<double>	thetaError_;
 		int				maxMile_;
 		int				minMile_;
-		/* int				maxPrice_; */
-		/* int				minPrice_; */
 		string			dataInfo_;
 
 		void	getData();
@@ -38,7 +36,6 @@ class LinearRegression
 	public:
 		LinearRegression(int flags=1):
 			flags_(flags), theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), normMileage_(0), price_(0), maxMile_(-1), minMile_(-1), dataInfo_()
-			/* flags_(flags), theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), normMileage_(0), price_(0), maxMile_(-1), minMile_(-1), maxPrice_(-1), minPrice_(-1), dataInfo_() */
 			{
 				getData();
 				if (flags_ & 1){
@@ -52,8 +49,6 @@ class LinearRegression
 		double			theta1() {return theta1_;}
 		int				maxMile() {return maxMile_;}
 		int				minMile() {return minMile_;}
-		/* int				maxPrice() {return maxPrice_;} */
-		/* int				minPrice() {return minPrice_;} */
 		vector<double>	mileage() {return mileage_;}
 		vector<double>	price() {return price_;}
 		vector<double>	thetaError() {return thetaError_;}

@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:33 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/13 12:11:01 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/17 08:22:17 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,6 @@ class EstimatePrice
 		double			mileage() {return mileage_;}
 		int				maxMile() {return maxMile_;}
 		int				minMile() {return minMile_;}
+		vector<double>	predictionVector();
+		vector<double>	minMaxVector();
 };
