@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 10:30:47 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/13 12:10:59 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/17 08:21:56 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,21 @@ double	EstimatePrice::predictPrice(const int& mileage)
 	estimatePrice_ = theta0_ + (theta1_ * normMile);
 
 	return estimatePrice_;
+}
+
+vector<double>	EstimatePrice::predictionVector()
+{
+	vector<double>	predictVect;
+
+	predictVect.emplace_back(predictPrice(minMile_));
+	predictVect.emplace_back(predictPrice(maxMile_));
+	return predictVect;	
+}
+vector<double>	EstimatePrice::minMaxVector()
+{
+	vector<double>	predictVect;
+
+	predictVect.emplace_back(minMile_);
+	predictVect.emplace_back(maxMile_);
+	return predictVect;	
 }

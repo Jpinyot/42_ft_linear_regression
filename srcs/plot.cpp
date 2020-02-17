@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:00:03 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/15 18:29:11 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/17 11:53:17 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,21 @@ bool		Plot::needFloatVal(const string& string)
 	if (string == "linewidth"){
 		return true;
 	}
-	/* switch(string){ */
-	/* 	case "linewidth": */
-	/* 		return true; */
-	/* 	default: */
-	/* 		return false; */
-	/* } */
 	return false;
 }
-
+void	Plot::initialize()
+{
+	Py_Initialize();
+	if(PyArray_API == NULL){
+		import_array();
+	}
+}
 void	Plot::plot(const vector<double>& y, const string format)
 {
-			Py_Initialize();			//revisar!!!!
-			if(PyArray_API == NULL){
-			    import_array();
-			}
+			/* Py_Initialize();			//revisar!!!! */
+			/* if(PyArray_API == NULL){ */
+			/*     import_array(); */
+			/* } */
 	/* FROM 1 VALUE TO 2 */
 	vector<double> x(y.size());
     for(size_t i=0; i<x.size(); ++i) x.at(i) = i;
@@ -90,10 +90,10 @@ void	Plot::plot(const vector<double>& x, const vector<double>& y, const string f
 
 void	Plot::named_plot(const string& name, const vector<double>& y, const string& format)
 {
-			Py_Initialize();			//revisar!!!!
-			if(PyArray_API == NULL){
-			    import_array();
-			}
+			/* Py_Initialize();			//revisar!!!! */
+			/* if(PyArray_API == NULL){ */
+			/*     import_array(); */
+			/* } */
 	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
 	PyObject* pymod = PyImport_Import(pyplotname);
 
@@ -189,12 +189,10 @@ void	Plot::param_plot(const vector<string>& params, const vector<double>& x, con
 }
 void	Plot::param_plot(const vector<string>& params, const vector<double>& y, const string& format)
 {
-			Py_Initialize();			//revisar!!!!
-			if(PyArray_API == NULL){
-			    import_array();
-			}
-	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
-	PyObject* pymod = PyImport_Import(pyplotname);
+			/* Py_Initialize();			//revisar!!!! */
+			/* if(PyArray_API == NULL){ */
+			/*     import_array(); */
+			/* } */
 
 	PyObject* kwargs = PyDict_New();
 	for (int i = 1; i < params.size(); i += 2){
@@ -207,23 +205,25 @@ void	Plot::param_plot(const vector<string>& params, const vector<double>& y, con
 	}
 
 	/* FROM 1 VALUE TO 2 */
-	/* vector<double> x(y.size()); */
-    /* for(size_t i=0; i<x.size(); ++i) x.at(i) = i; */
+	vector<double> x(y.size());
+    for(size_t i=0; i<x.size(); ++i) x.at(i) = i;
 
-    /* PyObject* xarray = getArray(x); */
+    PyObject* xarray = getArray(x);
     PyObject* yarray = getArray(y);
 
-    PyObject* pystring = PyString_FromString(format.c_str());
+    PyObject* pystring = PyString_FromString(format.c_str());		//format
 
-    PyObject* plot_args = PyTuple_New(2);
-    /* PyTuple_SetItem(plot_args, 0, xarray); */
-    PyTuple_SetItem(plot_args, 0, yarray);
-    PyTuple_SetItem(plot_args, 1, pystring);
+    PyObject* plot_args = PyTuple_New(3);
+    PyTuple_SetItem(plot_args, 0, xarray);
+    PyTuple_SetItem(plot_args, 1, yarray);
+    PyTuple_SetItem(plot_args, 2, pystring);
+
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
 
 	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "plot"),
 									plot_args,
 									kwargs);
-		cout << "%\n\n";				//debug
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
@@ -285,6 +285,36 @@ void	Plot::subplot2grid(long nRows, long nCols, long rowId, long colId, long row
     Py_DECREF(args);
     Py_DECREF(res);
 	
+}
+
+void	Plot::subplots_adjust(const vector<string>& keywords)
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+	PyObject* kwargs = PyDict_New();
+	for (int i = 1; i < keywords.size(); i += 2){
+		if (needFloatVal(keywords[i - 1])){
+			PyDict_SetItemString(kwargs, keywords[i - 1].c_str(), PyFloat_FromDouble(stod(keywords[i])));
+		}
+		else{
+			PyDict_SetItemString(kwargs, keywords[i - 1].c_str(), PyString_FromString(keywords[i].c_str()));
+		}
+	}
+
+    PyObject* plot_args = PyTuple_New(0);
+
+		cout << "%\n\n";				//debug
+	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "subplots_adjust"),
+									plot_args,
+									kwargs);
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+
+    Py_DECREF(plot_args);
+    Py_DECREF(kwargs);
+    if(res) Py_DECREF(res);
 }
 
 void	Plot::axis(const string &axisstr)
@@ -370,7 +400,6 @@ void	Plot::tick_params(const map<string, string>& keywords, const string axis)
 
 	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "tick_params"),
 									args, kwargs);
-	/* PyObject* res = PyObject_Call(detail::_interpreter::get().s_python_function_tick_params, args, kwargs); */
   
 	if (!res) throw runtime_error("Call to tick_params() failed");
 
@@ -390,7 +419,6 @@ void	Plot::legend()
 
 	PyObject* res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "legend"),
 											empty_tube);
-    /* PyObject* res = PyObject_CallObject(detail::_interpreter::get().s_python_function_legend, detail::_interpreter::get().s_python_empty_tuple); */
     if(!res) throw std::runtime_error("Call to legend() failed.");
 
 	Py_DECREF(pyplotname);
@@ -399,9 +427,142 @@ void	Plot::legend()
     Py_DECREF(res);
 }
 
+void	Plot::title(const string& titlestr, const vector<string>& keywords)
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+    PyObject* pytitlestr = PyString_FromString(titlestr.c_str());
+    PyObject* args = PyTuple_New(1);
+    PyTuple_SetItem(args, 0, pytitlestr);
+
+    PyObject* kwargs = PyDict_New();
+	for (int i = 1; i < keywords.size(); i += 2){
+		if (needFloatVal(keywords[i - 1])){
+			PyDict_SetItemString(kwargs, keywords[i - 1].c_str(), PyFloat_FromDouble(stod(keywords[i])));
+		}
+		else{
+			PyDict_SetItemString(kwargs, keywords[i - 1].c_str(), PyString_FromString(keywords[i].c_str()));
+		}
+	}
+
+	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "title"),
+									args,
+									kwargs);
+    if(!res) throw std::runtime_error("Call to title() failed.");
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+
+    Py_DECREF(args);
+    Py_DECREF(kwargs);
+    Py_DECREF(res);
+
+}
+
+void	Plot::xlabel(const string &str, const vector<string>& keywords)
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+    PyObject* pystr = PyString_FromString(str.c_str());
+    PyObject* args = PyTuple_New(1);
+    PyTuple_SetItem(args, 0, pystr);
+
+    PyObject* kwargs = PyDict_New();
+	for (int i = 1; i < keywords.size(); i += 2){
+		if (needFloatVal(keywords[i - 1])){
+			PyDict_SetItemString(kwargs, keywords[i - 1].c_str(), PyFloat_FromDouble(stod(keywords[i])));
+		}
+		else{
+			PyDict_SetItemString(kwargs, keywords[i - 1].c_str(), PyString_FromString(keywords[i].c_str()));
+		}
+	}
+
+	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "xlabel"),
+									args,
+									kwargs);
+    if(!res) throw std::runtime_error("Call to xlabel() failed.");
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+
+    Py_DECREF(args);
+    Py_DECREF(kwargs);
+    Py_DECREF(res);
+	
+}
+
+void	Plot::ylabel(const string &str, const vector<string>& keywords)
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+    PyObject* pystr = PyString_FromString(str.c_str());
+    PyObject* args = PyTuple_New(1);
+    PyTuple_SetItem(args, 0, pystr);
+
+    PyObject* kwargs = PyDict_New();
+	for (int i = 1; i < keywords.size(); i += 2){
+		if (needFloatVal(keywords[i - 1])){
+			PyDict_SetItemString(kwargs, keywords[i - 1].c_str(), PyFloat_FromDouble(stod(keywords[i])));
+		}
+		else{
+			PyDict_SetItemString(kwargs, keywords[i - 1].c_str(), PyString_FromString(keywords[i].c_str()));
+		}
+	}
+
+	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "ylabel"),
+									args,
+									kwargs);
+    if(!res) throw std::runtime_error("Call to ylabel() failed.");
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+
+    Py_DECREF(args);
+    Py_DECREF(kwargs);
+    Py_DECREF(res);
+	
+}
+
+void	Plot::tight_layout()
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+    PyObject *res2 = PyObject_CallObject(	PyObject_GetAttrString(pymod, "tight_layout"),
+											PyTuple_New(0));
+
+    if (res2) Py_DECREF(res2);
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+}
+
+void	Plot::set_tight_layout(bool flag)		//SEGFAULT
+{
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
+	PyObject* pymod = PyImport_Import(pyplotname);
+
+	PyObject* pyflag = flag ? Py_True : Py_False;
+    Py_INCREF(pyflag);
+
+    PyObject* args = PyTuple_New(1);
+    PyTuple_SetItem(args, 0, pyflag);
+    PyObject *res2 = PyObject_CallObject(	PyObject_GetAttrString(pymod, "set_tight_layout"),
+											args);
+
+    if (res2) Py_DECREF(res2);
+
+	Py_DECREF(pyplotname);
+	Py_DECREF(pymod);
+	Py_DECREF(args);
+}
+
 void	Plot::show()
 {
-	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");		//used for show
+	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
 	PyObject* pymod = PyImport_Import(pyplotname);
 	PyObject* res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "show"),
 											PyTuple_New(0));
