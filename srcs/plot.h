@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:00:12 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/15 18:26:11 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/17 11:36:09 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class Plot{
 			    import_array();
 			}
 		};
+		void	initialize();
 		void	plot(const vector<double>& y, const string format="");
 		void	plot(const vector<double>& x, const vector<double>& y, const string format="");
 		void	named_plot(const string& name, const vector<double>& y, const string& format = "");
@@ -40,10 +41,16 @@ class Plot{
 		void	param_plot(const vector<string>& params, const vector<double>& y, const string& format = "");
 		void	subplot(long nRows, long nCols, long plotNumber);
 		void	subplot2grid(long nRows, long nCols, long rowId=0, long colId=0, long rowSpan=1, long colSpan=1);
+		void	subplots_adjust(const vector<string>& keywords={});
 		void	axis(const std::string &axisstr);
 		void	ylim(double left, double right);
 		void	xlim(double left, double right);
 		void	tick_params(const map<string, string>& keywords, const string axis = "both");
 		void	legend();
+		void	title(const string& titlestr, const vector<string>& keywords = {});
+		void	xlabel(const string &str, const vector<string>& keywords = {});
+		void	ylabel(const string &str, const vector<string>& keywords = {});
+		void	tight_layout();
+		void	set_tight_layout(bool flag);
 		void	show();
 };

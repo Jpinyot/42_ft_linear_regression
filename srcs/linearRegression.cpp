@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:31 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/15 11:47:45 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/17 11:53:26 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,6 @@ void	LinearRegression::setData(const string& line)
 		if (minMile_ == -1 || mileage < minMile_){
 			minMile_ = mileage;
 		}
-		/* if (price > maxPrice_){ */
-		/* 	maxPrice_ = price; */
-		/* } */
-		/* if (minPrice_ == -1 || price < minPrice_){ */
-		/* 	minPrice_ = price; */
-		/* } */
 	}
 }
 
@@ -97,12 +91,6 @@ void	LinearRegression::linearRegression()
 		}
 		theta0_ -= learningRate_ * 1/size * tmpT0;
 		theta1_ -= learningRate_ * 1/size * tmpT1;
-	}
-	if (flags_ & 1){
-		/* plotThetaError(thetaError); */
-		/* thread plotThread(plotThetaError, thetaError); */
-		/* plotThread.join(); */
-		/* delete plotThread; */
 	}
 	createOutFile();
 }
