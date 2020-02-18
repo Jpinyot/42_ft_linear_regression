@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:33 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/17 11:11:47 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/18 11:34:15 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,11 @@ class LinearRegression
 
 		void	getData();
 		void	setData(const string& line);
-		void	writeData(const string& line);
 		void	normalizeMileage();
 		void	createOutFile();
 
 	public:
-		LinearRegression(int flags=1):
+		LinearRegression(int flags=0):
 			flags_(flags), theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), normMileage_(0), price_(0), maxMile_(-1), minMile_(-1), dataInfo_()
 			{
 				getData();
@@ -42,14 +41,16 @@ class LinearRegression
 					thetaError_.reserve(CYCLES);
 				}
 			};
-		void		linearRegression();
-		double		normalize(const int& mileage);
+		virtual	~LinearRegression() {};
+		void					train();
 
-		double			theta0() {return theta0_;}
-		double			theta1() {return theta1_;}
-		int				maxMile() {return maxMile_;}
-		int				minMile() {return minMile_;}
-		vector<double>	mileage() {return mileage_;}
-		vector<double>	price() {return price_;}
-		vector<double>	thetaError() {return thetaError_;}
+		inline double			theta0() {return theta0_;}
+		inline double			theta1() {return theta1_;}
+		inline int				maxMile() {return maxMile_;}
+		inline int				minMile() {return minMile_;}
+		inline vector<double>	mileage() {return mileage_;}
+		inline vector<double>	price() {return price_;}
+		inline vector<double>	thetaError() {return thetaError_;}
+
+		inline void				setFlags(int flags) {flags_ = flags_ | flags;}
 };

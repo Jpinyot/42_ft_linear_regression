@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:00:03 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/17 11:53:17 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/18 11:28:35 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ bool		Plot::needFloatVal(const string& string)
 	}
 	return false;
 }
+
 void	Plot::initialize()
 {
 	Py_Initialize();
@@ -34,6 +35,7 @@ void	Plot::initialize()
 		import_array();
 	}
 }
+
 void	Plot::plot(const vector<double>& y, const string format)
 {
 			/* Py_Initialize();			//revisar!!!! */

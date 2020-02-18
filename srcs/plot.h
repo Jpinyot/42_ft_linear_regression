@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:00:12 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/17 11:36:09 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/18 09:40:20 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class Plot{
 			    import_array();
 			}
 		};
+		virtual	~Plot() {};
 		void	initialize();
 		void	plot(const vector<double>& y, const string format="");
 		void	plot(const vector<double>& x, const vector<double>& y, const string format="");
