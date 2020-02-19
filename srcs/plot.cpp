@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:00:03 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/18 11:28:35 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/19 08:08:32 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,32 +38,27 @@ void	Plot::initialize()
 
 void	Plot::plot(const vector<double>& y, const string format)
 {
-			/* Py_Initialize();			//revisar!!!! */
-			/* if(PyArray_API == NULL){ */
-			/*     import_array(); */
-			/* } */
-	/* FROM 1 VALUE TO 2 */
 	vector<double> x(y.size());
     for(size_t i=0; i<x.size(); ++i) x.at(i) = i;
 
     PyObject* xarray = getArray(x);
     PyObject* yarray = getArray(y);
 
-    PyObject* pystring = PyString_FromString(format.c_str());		//format
+    PyObject* pystring = PyString_FromString(format.c_str());
 
-    PyObject* plot_args = PyTuple_New(3);
-    PyTuple_SetItem(plot_args, 0, xarray);
-    PyTuple_SetItem(plot_args, 1, yarray);
-    PyTuple_SetItem(plot_args, 2, pystring);
+    PyObject* args = PyTuple_New(3);
+    PyTuple_SetItem(args, 0, xarray);
+    PyTuple_SetItem(args, 1, yarray);
+    PyTuple_SetItem(args, 2, pystring);
 
 	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
 	PyObject* pymod = PyImport_Import(pyplotname);
 	PyObject* res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "plot"),
-											plot_args);
+											args);
 
-    Py_DECREF(plot_args);
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
+    Py_DECREF(args);
     if(res) Py_DECREF(res);
 }
 
@@ -72,30 +67,26 @@ void	Plot::plot(const vector<double>& x, const vector<double>& y, const string f
     PyObject* xarray = getArray(x);
     PyObject* yarray = getArray(y);
 
-    PyObject* pystring = PyString_FromString(format.c_str());		//format
+    PyObject* pystring = PyString_FromString(format.c_str());
 
-    PyObject* plot_args = PyTuple_New(3);
-    PyTuple_SetItem(plot_args, 0, xarray);
-    PyTuple_SetItem(plot_args, 1, yarray);
-    PyTuple_SetItem(plot_args, 2, pystring);
+    PyObject* args = PyTuple_New(3);
+    PyTuple_SetItem(args, 0, xarray);
+    PyTuple_SetItem(args, 1, yarray);
+    PyTuple_SetItem(args, 2, pystring);
 
 	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
 	PyObject* pymod = PyImport_Import(pyplotname);
 	PyObject* res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "plot"),
-											plot_args);
+											args);
 
-    Py_DECREF(plot_args);
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
+    Py_DECREF(args);
     if(res) Py_DECREF(res);
 }
 
 void	Plot::named_plot(const string& name, const vector<double>& y, const string& format)
 {
-			/* Py_Initialize();			//revisar!!!! */
-			/* if(PyArray_API == NULL){ */
-			/*     import_array(); */
-			/* } */
 	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
 	PyObject* pymod = PyImport_Import(pyplotname);
 
@@ -106,20 +97,19 @@ void	Plot::named_plot(const string& name, const vector<double>& y, const string&
 
     PyObject* pystring = PyString_FromString(format.c_str());
 
-    PyObject* plot_args = PyTuple_New(2);
+    PyObject* args = PyTuple_New(2);
 
-    PyTuple_SetItem(plot_args, 0, yarray);
-    PyTuple_SetItem(plot_args, 1, pystring);
+    PyTuple_SetItem(args, 0, yarray);
+    PyTuple_SetItem(args, 1, pystring);
 
 	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "plot"),
-									plot_args,
+									args,
 									kwargs);
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(kwargs);
-    Py_DECREF(plot_args);
+    Py_DECREF(args);
     if (res) Py_DECREF(res);
 }
 
@@ -136,20 +126,19 @@ void	Plot::named_plot(const string& name, const vector<double>& x, const vector<
 
     PyObject* pystring = PyString_FromString(format.c_str());
 
-    PyObject* plot_args = PyTuple_New(3);
-    PyTuple_SetItem(plot_args, 0, xarray);
-    PyTuple_SetItem(plot_args, 1, yarray);
-    PyTuple_SetItem(plot_args, 2, pystring);
+    PyObject* args = PyTuple_New(3);
+    PyTuple_SetItem(args, 0, xarray);
+    PyTuple_SetItem(args, 1, yarray);
+    PyTuple_SetItem(args, 2, pystring);
 
 	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "plot"),
-									plot_args,
+									args,
 									kwargs);
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(kwargs);
-    Py_DECREF(plot_args);
+    Py_DECREF(args);
     if (res) Py_DECREF(res);
 }
 
@@ -173,29 +162,23 @@ void	Plot::param_plot(const vector<string>& params, const vector<double>& x, con
 
     PyObject* pystring = PyString_FromString(format.c_str());
 
-    PyObject* plot_args = PyTuple_New(3);
-    PyTuple_SetItem(plot_args, 0, xarray);
-    PyTuple_SetItem(plot_args, 1, yarray);
-    PyTuple_SetItem(plot_args, 2, pystring);
+    PyObject* args = PyTuple_New(3);
+    PyTuple_SetItem(args, 0, xarray);
+    PyTuple_SetItem(args, 1, yarray);
+    PyTuple_SetItem(args, 2, pystring);
 
 	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "plot"),
-									plot_args,
+									args,
 									kwargs);
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(kwargs);
-    Py_DECREF(plot_args);
+    Py_DECREF(args);
     if (res) Py_DECREF(res);
 }
 void	Plot::param_plot(const vector<string>& params, const vector<double>& y, const string& format)
 {
-			/* Py_Initialize();			//revisar!!!! */
-			/* if(PyArray_API == NULL){ */
-			/*     import_array(); */
-			/* } */
-
 	PyObject* kwargs = PyDict_New();
 	for (int i = 1; i < params.size(); i += 2){
 		if (needFloatVal(params[i - 1])){
@@ -206,32 +189,30 @@ void	Plot::param_plot(const vector<string>& params, const vector<double>& y, con
 		}
 	}
 
-	/* FROM 1 VALUE TO 2 */
 	vector<double> x(y.size());
     for(size_t i=0; i<x.size(); ++i) x.at(i) = i;
 
     PyObject* xarray = getArray(x);
     PyObject* yarray = getArray(y);
 
-    PyObject* pystring = PyString_FromString(format.c_str());		//format
+    PyObject* pystring = PyString_FromString(format.c_str());
 
-    PyObject* plot_args = PyTuple_New(3);
-    PyTuple_SetItem(plot_args, 0, xarray);
-    PyTuple_SetItem(plot_args, 1, yarray);
-    PyTuple_SetItem(plot_args, 2, pystring);
+    PyObject* args = PyTuple_New(3);
+    PyTuple_SetItem(args, 0, xarray);
+    PyTuple_SetItem(args, 1, yarray);
+    PyTuple_SetItem(args, 2, pystring);
 
 	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
 	PyObject* pymod = PyImport_Import(pyplotname);
 
 	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "plot"),
-									plot_args,
+									args,
 									kwargs);
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(kwargs);
-    Py_DECREF(plot_args);
+    Py_DECREF(args);
     if (res) Py_DECREF(res);
 }
 
@@ -251,9 +232,8 @@ void	Plot::subplot(long nRows, long nCols, long plotNumber)
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(args);
-    Py_DECREF(res);
+    if (res) Py_DECREF(res);
 }
 
 void	Plot::subplot2grid(long nRows, long nCols, long rowId, long colId, long rowSpan, long colSpan)
@@ -281,11 +261,10 @@ void	Plot::subplot2grid(long nRows, long nCols, long rowId, long colId, long row
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(shape);
     Py_DECREF(loc);
     Py_DECREF(args);
-    Py_DECREF(res);
+    if (res) Py_DECREF(res);
 	
 }
 
@@ -304,17 +283,15 @@ void	Plot::subplots_adjust(const vector<string>& keywords)
 		}
 	}
 
-    PyObject* plot_args = PyTuple_New(0);
+    PyObject* args = PyTuple_New(0);
 
-		cout << "%\n\n";				//debug
 	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "subplots_adjust"),
-									plot_args,
+									args,
 									kwargs);
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
-    Py_DECREF(plot_args);
+    Py_DECREF(args);
     Py_DECREF(kwargs);
     if(res) Py_DECREF(res);
 }
@@ -334,9 +311,8 @@ void	Plot::axis(const string &axisstr)
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(args);
-    Py_DECREF(res);
+    if(res) Py_DECREF(res);
 }
 void	ylim(double left, double right)
 {
@@ -356,9 +332,8 @@ void	ylim(double left, double right)
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(args);
-    Py_DECREF(res);
+    if(res) Py_DECREF(res);
 }
 
 void	xlim(double left, double right)
@@ -379,9 +354,8 @@ void	xlim(double left, double right)
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(args);
-    Py_DECREF(res);
+    if(res) Py_DECREF(res);
 }
 
 void	Plot::tick_params(const map<string, string>& keywords, const string axis)
@@ -389,12 +363,10 @@ void	Plot::tick_params(const map<string, string>& keywords, const string axis)
 	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
 	PyObject* pymod = PyImport_Import(pyplotname);
 
-	// construct positional args
 	PyObject* args;
 	args = PyTuple_New(1);
 	PyTuple_SetItem(args, 0, PyString_FromString(axis.c_str()));
 	
-	// construct keyword args
 	PyObject* kwargs = PyDict_New();
 	for (map<string, string>::const_iterator it = keywords.begin(); it != keywords.end(); ++it){
 		PyDict_SetItemString(kwargs, it->first.c_str(), PyString_FromString(it->second.c_str()));
@@ -407,10 +379,9 @@ void	Plot::tick_params(const map<string, string>& keywords, const string axis)
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-  
 	Py_DECREF(args);
 	Py_DECREF(kwargs);
-	Py_DECREF(res);
+    if(res) Py_DECREF(res);
 }
 
 void	Plot::legend()
@@ -426,7 +397,7 @@ void	Plot::legend()
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
 	Py_DECREF(empty_tube);
-    Py_DECREF(res);
+    if(res) Py_DECREF(res);
 }
 
 void	Plot::title(const string& titlestr, const vector<string>& keywords)
@@ -455,10 +426,9 @@ void	Plot::title(const string& titlestr, const vector<string>& keywords)
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(args);
     Py_DECREF(kwargs);
-    Py_DECREF(res);
+    if(res) Py_DECREF(res);
 
 }
 
@@ -488,11 +458,9 @@ void	Plot::xlabel(const string &str, const vector<string>& keywords)
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(args);
     Py_DECREF(kwargs);
-    Py_DECREF(res);
-	
+    if(res) Py_DECREF(res);
 }
 
 void	Plot::ylabel(const string &str, const vector<string>& keywords)
@@ -521,10 +489,9 @@ void	Plot::ylabel(const string &str, const vector<string>& keywords)
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
-
     Py_DECREF(args);
     Py_DECREF(kwargs);
-    Py_DECREF(res);
+    if(res) Py_DECREF(res);
 	
 }
 
@@ -533,16 +500,15 @@ void	Plot::tight_layout()
 	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
 	PyObject* pymod = PyImport_Import(pyplotname);
 
-    PyObject *res2 = PyObject_CallObject(	PyObject_GetAttrString(pymod, "tight_layout"),
+    PyObject *res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "tight_layout"),
 											PyTuple_New(0));
-
-    if (res2) Py_DECREF(res2);
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
+    if (res) Py_DECREF(res);
 }
 
-void	Plot::set_tight_layout(bool flag)		//SEGFAULT
+void	Plot::set_tight_layout(bool flag)
 {
 	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
 	PyObject* pymod = PyImport_Import(pyplotname);
@@ -552,14 +518,13 @@ void	Plot::set_tight_layout(bool flag)		//SEGFAULT
 
     PyObject* args = PyTuple_New(1);
     PyTuple_SetItem(args, 0, pyflag);
-    PyObject *res2 = PyObject_CallObject(	PyObject_GetAttrString(pymod, "set_tight_layout"),
+    PyObject *res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "set_tight_layout"),
 											args);
-
-    if (res2) Py_DECREF(res2);
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
 	Py_DECREF(args);
+    if (res) Py_DECREF(res);
 }
 
 void	Plot::show()
