@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:31 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/18 11:14:52 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/19 12:21:32 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,17 @@ void	LinearRegression::train()
 		theta1_ -= learningRate_ * 1/size * tmpT1;
 	}
 	createOutFile();
+}
+
+string	LinearRegression::accuracy()
+{
+	LinearRegError accuracy;
+
+	accuracy.setX(normMileage());
+	accuracy.setY(price());
+	accuracy.setTheta0(theta0());
+	accuracy.setTheta1(theta1());
+	accuracy.calculateError();
+
+	return accuracy.explicidStr();
 }
