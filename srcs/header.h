@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 08:36:42 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/18 08:40:54 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/19 09:08:10 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #define THETA_FILE "files/thetaFile.csv"
 #define DELIMETER ','
 #define LEARNING_RATE 0.02
-#define CYCLES 4000
+#define CYCLES 6000
 #define NORM_PLOT 0.2
 
 using namespace std;
