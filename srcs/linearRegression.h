@@ -6,11 +6,12 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:33 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/18 11:34:15 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/19 12:21:27 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+#include "linearRegError.h"
 
 class LinearRegression
 {
@@ -43,12 +44,14 @@ class LinearRegression
 			};
 		virtual	~LinearRegression() {};
 		void					train();
+		string					accuracy();
 
 		inline double			theta0() {return theta0_;}
 		inline double			theta1() {return theta1_;}
 		inline int				maxMile() {return maxMile_;}
 		inline int				minMile() {return minMile_;}
 		inline vector<double>	mileage() {return mileage_;}
+		inline vector<double>	normMileage() {return normMileage_;}
 		inline vector<double>	price() {return price_;}
 		inline vector<double>	thetaError() {return thetaError_;}
 
