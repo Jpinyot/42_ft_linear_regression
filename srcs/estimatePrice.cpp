@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 10:30:47 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/18 11:26:34 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/20 11:27:13 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	EstimatePrice::getData()
     	throw runtime_error(strError);
 	}
 	if (getline(file, line)){
-		setMinMaxMile(line);
+		setNormParam(line);
 	}
 	else{
 		string strError;
@@ -67,43 +67,125 @@ void	EstimatePrice::setTheta(const string& line)
 	}
 }
 
-void	EstimatePrice::setMinMaxMile(const string& line)
+void	EstimatePrice::setNormParam(const string& line)
 {
 	int	delimeterPos = 0;
 	if ((delimeterPos = line.find(DELIMETER)))
 	{
-		string maxMile = line.substr(0, delimeterPos); 
-		string minMile = line.substr(delimeterPos + 1, line.size());
-		maxMile_ = stoi(maxMile);
-		minMile_ = stoi(minMile);
+		string mean = line.substr(0, delimeterPos); 
+		string stdDeviation = line.substr(delimeterPos + 1, line.size());
+		mean_ = stod(mean);
+		stdDeviation_ = stod(stdDeviation);
 	}
 	else{
 		string strError;
 		strError.append("File ");
 		strError.append(THETA_FILE);
 		strError.append(" unknow format on second line.\n");
-		strError.append("Expected format:\n[max mileage value],[min mileage value]");
+		strError.append("Expected format:\n[mean],[Standard Deviation]");
     	throw runtime_error(strError);
 	}
-	if (maxMile_ == minMile_){
-		string strError;
-		strError.append("On file ");
-		strError.append(THETA_FILE);
-		strError.append(": espected diferent values from max mileage and min mileage.\n");
-    	throw runtime_error(strError);
-	}
+	/* if (maxMile_ == minMile_){ */
+	/* 	string strError; */
+	/* 	strError.append("On file "); */
+	/* 	strError.append(THETA_FILE); */
+	/* 	strError.append(": espected diferent values from max mileage and min mileage.\n"); */
+    	/* throw runtime_error(strError); */
+	/* } */
 }
+
+/* void	EstimatePrice::setMinMaxMile(const string& line) */
+/* { */
+/* 	int	delimeterPos = 0; */
+/* 	if ((delimeterPos = line.find(DELIMETER))) */
+/* 	{ */
+/* 		string maxMile = line.substr(0, delimeterPos); */ 
+/* 		string minMile = line.substr(delimeterPos + 1, line.size()); */
+/* 		maxMile_ = stoi(maxMile); */
+/* 		minMile_ = stoi(minMile); */
+/* 	} */
+/* 	else{ */
+/* 		string strError; */
+/* 		strError.append("File "); */
+/* 		strError.append(THETA_FILE); */
+/* 		strError.append(" unknow format on second line.\n"); */
+/* 		strError.append("Expected format:\n[max mileage value],[min mileage value]"); */
+/*     	throw runtime_error(strError); */
+/* 	} */
+/* 	if (maxMile_ == minMile_){ */
+/* 		string strError; */
+/* 		strError.append("On file "); */
+/* 		strError.append(THETA_FILE); */
+/* 		strError.append(": espected diferent values from max mileage and min mileage.\n"); */
+/*     	throw runtime_error(strError); */
+/* 	} */
+/* } */
 
 double	EstimatePrice::normalizeMile(const int& mileage)
 {
-	double normMile = (mileage - minMile_) / (maxMile_ - minMile_);
-	return normMile;
+	return (mileage - mean_) / stdDeviation_;
+	/* double normMile = (mileage - minMile_) / (maxMile_ - minMile_); */
+	/* return normMile; */
+}
+
+bool isNumber(const string& s)
+{
+	return !s.empty() && find_if(s.begin(), s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
+}
+
+double	EstimatePrice::predictPrice(const string& mileage, int& error)
+{
+	if (isNumber(mileage)){
+		return predictPrice(atoi(mileage.c_str()), error);
+	}
+	else {
+		string strError;
+		strError.append("EstimatePrice::predictPrice(const string& s) unespected char.\n");
+    	throw runtime_error(strError);
+	}
+
+}
+
+double	EstimatePrice::predictPrice(const string& mileage)
+{
+	if (isNumber(mileage)){
+		return predictPrice(atoi(mileage.c_str()));
+	}
+	else {
+		string strError;
+		strError.append("EstimatePrice::predictPrice(const string& s) unespected char.\n");
+    	throw runtime_error(strError);
+	}
+
+}
+
+double	EstimatePrice::predictPrice(const int& mileage, int& error)
+{
+	if (mileage > 0){
+		double normMile = normalizeMile(mileage);
+		cout << "<<" << normMile << ">>";
+		double predictedPrice = theta0_ + (theta1_ * normMile);
+		if (predictedPrice < 0){
+			error = 1;
+		}
+		return predictedPrice;
+	}
+	else {
+		string strError;
+		strError.append("EstimatePrice::predictPrice espected postive value as input.\n");
+    	throw runtime_error(strError);
+	}
 }
 
 double	EstimatePrice::predictPrice(const int& mileage)
 {
-	double normMile = normalizeMile(mileage);
-	estimatePrice_ = theta0_ + (theta1_ * normMile);
-
-	return estimatePrice_;
+	if (mileage > 0){
+		double normMile = normalizeMile(mileage);
+		return theta0_ + (theta1_ * normMile);
+	}
+	else {
+		string strError;
+		strError.append("EstimatePrice::predictPrice espected postive value as input.\n");
+    	throw runtime_error(strError);
+	}
 }

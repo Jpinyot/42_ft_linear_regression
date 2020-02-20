@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:31 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/19 12:21:32 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/20 11:26:49 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,21 @@ void	LinearRegression::getData()
 		strError.append(" not found.");
     	throw runtime_error(strError);
 	}
-	else {
-		dataInfo_ = line;
-	}
+	dataInfo_ = line;
 	while (getline(file, line)){
 		setData(line);
+		mean_ += mileage_[dataSize_];
+		dataSize_++;
 	}
+	mean_ /= dataSize_;
 	file.close();
-	if (maxMile_ == minMile_){
-		string strError;
-		strError.append("On file ");
-		strError.append(THETA_FILE);
-		strError.append(": espected diferent values from max mileage and min mileage.\n");
-    	throw runtime_error(strError);
-	}
+	/* if (maxMile_ == minMile_){ */
+	/* 	string strError; */
+	/* 	strError.append("On file "); */
+	/* 	strError.append(THETA_FILE); */
+	/* 	strError.append(": espected diferent values from max mileage and min mileage.\n"); */
+    	/* throw runtime_error(strError); */
+	/* } */
 	normalizeMileage();
 }
 
@@ -62,17 +63,28 @@ void	LinearRegression::setData(const string& line)
 		string strError;
 		strError.append("File ");
 		strError.append(DATA_FILE);
-		strError.append(" unknow format on first line.\n");
+		strError.append(" unknow format.\n");
 		strError.append("Expected format:\t[km],[price]");
     	throw runtime_error(strError);
 	}
 }
 
+void	LinearRegression::calculateStdDesviation()
+{
+	double sumX = 0;
+	for (int i = 0; i < mileage_.size(); i++){
+		sumX += pow(mileage_[i] - mean_, 2);
+	}
+	stdDeviation_ = sqrt(sumX / dataSize_);
+}
+
 void	LinearRegression::normalizeMileage()
 {
-	int divisor = maxMile_ - minMile_;
+	calculateStdDesviation();
+	/* cout << stdDeviation_ << "\n\n"; */
 	for (int i = 0; mileage_[i]; i++){
-		normMileage_.emplace_back((mileage_[i] - minMile_) / divisor);
+		normMileage_.emplace_back((mileage_[i] - mean_) / stdDeviation_);
+		/* cout << normMileage_[i] << "\n"; */
 	}
 }
 
@@ -82,7 +94,9 @@ void	LinearRegression::createOutFile()
 	if (!outFile){
     	throw runtime_error("Error opening output file");
 	}
-	outFile << theta0_ << ',' << theta1_ << '\n' << maxMile_ << ',' << minMile_ << '\n' << std::endl;
+	outFile << theta0_ << DELIMETER << theta1_ << '\n' << mean_ << DELIMETER <<
+		stdDeviation_ << '\n' << std::endl;
+		/* stdDeviation_ << DELIMETER << dataSize_ << '\n' << std::endl; */
 	outFile.close();
 }
 
