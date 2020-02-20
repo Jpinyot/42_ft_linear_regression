@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 08:36:42 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/19 09:08:10 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/20 11:25:32 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,27 @@
 #include <ctype.h>
 #include <thread>
 #include <cmath>
+#include <stdlib.h>
 
 #include <unistd.h>
+
+#ifndef _HEADERH_
+#define _HEADERH_
 
 #define DATA_FILE "files/data.csv"
 #define THETA_FILE "files/thetaFile.csv"
 #define DELIMETER ','
 #define LEARNING_RATE 0.02
-#define CYCLES 6000
+#define CYCLES 4000
 #define NORM_PLOT 0.2
 
 using namespace std;
 
-/* enum Flags */
-/* { */
-/* 	plotThetaError =		001, */
-/* 	plotPrediction =		0010, */
-/* 	plotPredictionAndData =	00100 */
-/* }; */
-
-/* enum ErrorEstimatePrice */
-/* { */
-/* 	missingThetaFile */
-/* }; */
+enum flags
+{
+	plotCost = 1,
+	plotPrediction = 2,
+	printAccuracy = 4,
+	interactiveMode = 5
+};
+#endif

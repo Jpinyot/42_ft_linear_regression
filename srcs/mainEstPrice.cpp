@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 08:34:13 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/18 10:41:38 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/20 10:20:58 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 
 int main(int av, char** ag)
 {
-		/* ESTIMATE PRICE */
-	EstimatePrice ep;
-	cout << ep.predictPrice(1200);
-	cout << ep.theta0() << '\t' << ep.theta1() << '\n'
-		<< ep.maxMile() << '\t' << ep.minMile() << '\n'
-		<< ep.predictPrice(2300) << '\n';
-		
+	if (av != 1){
+		EstimatePrice ep;
+		for (int i = 1; i < av; i++){
+			int errorCode = 0;
+			cout << ep.predictPrice(atoi(ag[i]), errorCode);
+			if (errorCode == 1){
+				cout << "\t\tWarning: Value " << ag[i] << " out of data.";
+			}
+			cout << "\n";
+		}
+	}
 	return 0;
 }

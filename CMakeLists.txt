@@ -6,7 +6,7 @@
 #    By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/12 12:28:11 by jpinyot           #+#    #+#              #
-#    Updated: 2020/02/18 11:25:57 by jpinyot          ###   ########.fr        #
+#    Updated: 2020/02/19 12:08:54 by jpinyot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,19 +24,23 @@ add_executable(	ft_linear_regression
 				srcs/main.cpp
 				srcs/linearRegression.cpp
 				srcs/estimatePrice.cpp
+				srcs/linearRegError.cpp
 				srcs/plot.cpp)
 set(HEADER_FILES	ft_linear_regression
 					srcs/linearRegression.h
  					srcs/estimatePrice.h
  					srcs/header.h
+					srcs/linearRegrError.h
 					srcs/plot.h)
 
 	# linear_regression
 add_executable(	linear_regression
 				srcs/mainLinReg.cpp
+				srcs/linearRegError.cpp
 				srcs/linearRegression.cpp)
 set(HEADER_FILES	linear_regression
-					srcs/linearRegression.h
+					srcs/linearRegession.h
+					srcs/linearRegrError.h
  					srcs/header.h)
 
 	# estimate_price
