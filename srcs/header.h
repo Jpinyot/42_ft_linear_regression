@@ -6,9 +6,12 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 08:36:42 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/20 11:25:32 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/20 11:48:42 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef _HEADERH_
+#define _HEADERH_
 
 #include <vector>
 #include <string>
@@ -20,9 +23,6 @@
 #include <stdlib.h>
 
 #include <unistd.h>
-
-#ifndef _HEADERH_
-#define _HEADERH_
 
 #define DATA_FILE "files/data.csv"
 #define THETA_FILE "files/thetaFile.csv"

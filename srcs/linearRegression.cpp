@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:31 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/20 11:26:49 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/20 11:47:20 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,6 @@ void	LinearRegression::getData()
 	}
 	mean_ /= dataSize_;
 	file.close();
-	/* if (maxMile_ == minMile_){ */
-	/* 	string strError; */
-	/* 	strError.append("On file "); */
-	/* 	strError.append(THETA_FILE); */
-	/* 	strError.append(": espected diferent values from max mileage and min mileage.\n"); */
-    	/* throw runtime_error(strError); */
-	/* } */
 	normalizeMileage();
 }
 
@@ -81,10 +74,8 @@ void	LinearRegression::calculateStdDesviation()
 void	LinearRegression::normalizeMileage()
 {
 	calculateStdDesviation();
-	/* cout << stdDeviation_ << "\n\n"; */
 	for (int i = 0; mileage_[i]; i++){
 		normMileage_.emplace_back((mileage_[i] - mean_) / stdDeviation_);
-		/* cout << normMileage_[i] << "\n"; */
 	}
 }
 
@@ -96,7 +87,6 @@ void	LinearRegression::createOutFile()
 	}
 	outFile << theta0_ << DELIMETER << theta1_ << '\n' << mean_ << DELIMETER <<
 		stdDeviation_ << '\n' << std::endl;
-		/* stdDeviation_ << DELIMETER << dataSize_ << '\n' << std::endl; */
 	outFile.close();
 }
 
