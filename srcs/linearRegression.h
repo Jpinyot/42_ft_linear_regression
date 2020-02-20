@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:33 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/20 11:20:22 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/20 11:47:26 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ class LinearRegression
 	public:
 		LinearRegression(int flags=0):
 			flags_(flags), theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), normMileage_(0), price_(0), mean_(0), stdDeviation_(0), dataSize_(0), maxMile_(-1), minMile_(-1), dataInfo_()
-			/* flags_(flags), theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), normMileage_(0), price_(0), maxMile_(-1), minMile_(-1), dataInfo_() */
 			{
 				getData();
 				if (flags_ & 1){

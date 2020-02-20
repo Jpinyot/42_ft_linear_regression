@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 10:30:47 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/20 11:27:13 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/20 11:51:17 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,47 +85,11 @@ void	EstimatePrice::setNormParam(const string& line)
 		strError.append("Expected format:\n[mean],[Standard Deviation]");
     	throw runtime_error(strError);
 	}
-	/* if (maxMile_ == minMile_){ */
-	/* 	string strError; */
-	/* 	strError.append("On file "); */
-	/* 	strError.append(THETA_FILE); */
-	/* 	strError.append(": espected diferent values from max mileage and min mileage.\n"); */
-    	/* throw runtime_error(strError); */
-	/* } */
 }
-
-/* void	EstimatePrice::setMinMaxMile(const string& line) */
-/* { */
-/* 	int	delimeterPos = 0; */
-/* 	if ((delimeterPos = line.find(DELIMETER))) */
-/* 	{ */
-/* 		string maxMile = line.substr(0, delimeterPos); */ 
-/* 		string minMile = line.substr(delimeterPos + 1, line.size()); */
-/* 		maxMile_ = stoi(maxMile); */
-/* 		minMile_ = stoi(minMile); */
-/* 	} */
-/* 	else{ */
-/* 		string strError; */
-/* 		strError.append("File "); */
-/* 		strError.append(THETA_FILE); */
-/* 		strError.append(" unknow format on second line.\n"); */
-/* 		strError.append("Expected format:\n[max mileage value],[min mileage value]"); */
-/*     	throw runtime_error(strError); */
-/* 	} */
-/* 	if (maxMile_ == minMile_){ */
-/* 		string strError; */
-/* 		strError.append("On file "); */
-/* 		strError.append(THETA_FILE); */
-/* 		strError.append(": espected diferent values from max mileage and min mileage.\n"); */
-/*     	throw runtime_error(strError); */
-/* 	} */
-/* } */
 
 double	EstimatePrice::normalizeMile(const int& mileage)
 {
 	return (mileage - mean_) / stdDeviation_;
-	/* double normMile = (mileage - minMile_) / (maxMile_ - minMile_); */
-	/* return normMile; */
 }
 
 bool isNumber(const string& s)
@@ -163,7 +127,6 @@ double	EstimatePrice::predictPrice(const int& mileage, int& error)
 {
 	if (mileage > 0){
 		double normMile = normalizeMile(mileage);
-		cout << "<<" << normMile << ">>";
 		double predictedPrice = theta0_ + (theta1_ * normMile);
 		if (predictedPrice < 0){
 			error = 1;
