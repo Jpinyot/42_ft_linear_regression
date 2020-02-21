@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:00:03 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/19 08:08:32 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/21 10:56:06 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,18 +384,29 @@ void	Plot::tick_params(const map<string, string>& keywords, const string axis)
     if(res) Py_DECREF(res);
 }
 
-void	Plot::legend()
+void	Plot::legend(const vector<string>& keywords)
 {
+	PyObject* kwargs = PyDict_New();
+	for (int i = 1; i < keywords.size(); i += 2){
+		if (needFloatVal(keywords[i - 1])){
+			PyDict_SetItemString(kwargs, keywords[i - 1].c_str(), PyFloat_FromDouble(stod(keywords[i])));
+		}
+		else{
+			PyDict_SetItemString(kwargs, keywords[i - 1].c_str(), PyString_FromString(keywords[i].c_str()));
+		}
+	}
 	PyObject* pyplotname = PyString_FromString("matplotlib.pyplot");
 	PyObject* pymod = PyImport_Import(pyplotname);
     PyObject* empty_tube = PyTuple_New(0);
 
-	PyObject* res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "legend"),
-											empty_tube);
+	PyObject* res = PyObject_Call(	PyObject_GetAttrString(pymod, "legend"),
+									empty_tube,
+									kwargs);
     if(!res) throw std::runtime_error("Call to legend() failed.");
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);
+	Py_DECREF(kwargs);
 	Py_DECREF(empty_tube);
     if(res) Py_DECREF(res);
 }
@@ -520,6 +531,7 @@ void	Plot::set_tight_layout(bool flag)
     PyTuple_SetItem(args, 0, pyflag);
     PyObject *res = PyObject_CallObject(	PyObject_GetAttrString(pymod, "set_tight_layout"),
 											args);
+	write(1, "$", 1);
 
 	Py_DECREF(pyplotname);
 	Py_DECREF(pymod);

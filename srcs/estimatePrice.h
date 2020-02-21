@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 08:46:01 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/20 11:46:20 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/21 08:47:13 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ class EstimatePrice
 		void			setTheta(const string& line);
 		void			setNormParam(const string& line);
 		double			normalizeMile(const int& mileage);
+		bool			isNumber(const string& s);
 
 	public:
 		EstimatePrice():

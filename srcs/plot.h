@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:00:12 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/18 09:40:20 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/21 10:55:34 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <map>
 #include <iostream>
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include <Python.h>
 #include <numpy/arrayobject.h>
 
@@ -47,11 +48,11 @@ class Plot{
 		void	ylim(double left, double right);
 		void	xlim(double left, double right);
 		void	tick_params(const map<string, string>& keywords, const string axis = "both");
-		void	legend();
+		void	legend(const vector<string>& keywords={});
 		void	title(const string& titlestr, const vector<string>& keywords = {});
 		void	xlabel(const string &str, const vector<string>& keywords = {});
 		void	ylabel(const string &str, const vector<string>& keywords = {});
 		void	tight_layout();
-		void	set_tight_layout(bool flag);
+		void	set_tight_layout(bool flag=true);
 		void	show();
 };
