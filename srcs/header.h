@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 08:36:42 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/20 11:48:42 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/21 11:44:57 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,18 @@
 
 using namespace std;
 
-enum flags
+enum Flags
 {
+	noFlags = 0,
 	plotCost = 1,
-	plotPrediction = 2,
-	printAccuracy = 4,
-	interactiveMode = 5
+	plotData = 2,
+	plotPrediction = 4,
+	printAccuracy = 8,
+	/* interactiveMode = 5 */
 };
+
+inline Flags operator|(Flags a, Flags b)
+{
+	return static_cast<Flags>(static_cast<int>(a) | static_cast<int>(b));
+}
 #endif

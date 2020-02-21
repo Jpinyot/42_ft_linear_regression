@@ -6,11 +6,13 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 10:30:47 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/20 11:51:17 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/21 08:54:41 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "estimatePrice.h"
+
+///WHAT WHEN INPUT IS BOOOL
 
 void	EstimatePrice::getData()
 {
@@ -92,7 +94,7 @@ double	EstimatePrice::normalizeMile(const int& mileage)
 	return (mileage - mean_) / stdDeviation_;
 }
 
-bool isNumber(const string& s)
+bool EstimatePrice::isNumber(const string& s)
 {
 	return !s.empty() && find_if(s.begin(), s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
 }
@@ -125,7 +127,7 @@ double	EstimatePrice::predictPrice(const string& mileage)
 
 double	EstimatePrice::predictPrice(const int& mileage, int& error)
 {
-	if (mileage > 0){
+	if (mileage >= 0){
 		double normMile = normalizeMile(mileage);
 		double predictedPrice = theta0_ + (theta1_ * normMile);
 		if (predictedPrice < 0){
@@ -142,7 +144,7 @@ double	EstimatePrice::predictPrice(const int& mileage, int& error)
 
 double	EstimatePrice::predictPrice(const int& mileage)
 {
-	if (mileage > 0){
+	if (mileage >= 0){
 		double normMile = normalizeMile(mileage);
 		return theta0_ + (theta1_ * normMile);
 	}
