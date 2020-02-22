@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:31 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/20 11:47:20 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/22 09:21:56 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	LinearRegression::train()
 			tmpT0 += error;
 			tmpT1 += error * normMileage_[i];
 		}
-		if (flags_ & 1){
+		if (flags_ & plotCost){
 			thetaError_.emplace_back(fabs(tmpT0));
 		}
 		theta0_ -= learningRate_ * 1/size * tmpT0;

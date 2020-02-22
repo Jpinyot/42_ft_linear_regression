@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 11:01:33 by jpinyot           #+#    #+#             */
-/*   Updated: 2020/02/20 11:47:26 by jpinyot          ###   ########.fr       */
+/*   Updated: 2020/02/22 09:20:00 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 class LinearRegression
 {
 	private:
-		int				flags_;
+		Flags			flags_;
 		double			theta0_;
 		double			theta1_;
 		double			learningRate_;
@@ -38,11 +38,11 @@ class LinearRegression
 		void		createOutFile();
 
 	public:
-		LinearRegression(int flags=0):
+		LinearRegression(Flags flags=noFlags):
 			flags_(flags), theta0_(0), theta1_(0), learningRate_(LEARNING_RATE), mileage_(0), normMileage_(0), price_(0), mean_(0), stdDeviation_(0), dataSize_(0), maxMile_(-1), minMile_(-1), dataInfo_()
 			{
 				getData();
-				if (flags_ & 1){
+				if (flags_ & plotCost){
 					thetaError_.reserve(CYCLES);
 				}
 			};
@@ -62,5 +62,5 @@ class LinearRegression
 		inline vector<double>	price() {return price_;}
 		inline vector<double>	thetaError() {return thetaError_;}
 
-		inline void				setFlags(int flags) {flags_ = flags_ | flags;}
+		inline void				setFlags(Flags flags) {flags_ = flags_ | flags;}
 };
